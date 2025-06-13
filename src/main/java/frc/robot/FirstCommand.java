@@ -8,7 +8,7 @@ public class FirstCommand extends Command {
     private int printCount = 0;
 
     @Override
-    public void initalize() {
+    public void initialize() {
         commandTimer.stop();
         commandTimer.reset();
         printCount = 0;
@@ -16,7 +16,7 @@ public class FirstCommand extends Command {
 
     @Override
     public void execute() {
-        if (commandTimer.get()>=5) {
+        if (commandTimer.get()>=1) {
             this.printCount++;
             System.out.println(this.printCount);
             commandTimer.reset();
@@ -29,7 +29,8 @@ public class FirstCommand extends Command {
     }
 
     @Override
-    public void end() {
+    public void end(boolean interrupted) {
+        System.out.println("Command ended");
         commandTimer.stop();
         commandTimer.reset();
     }
