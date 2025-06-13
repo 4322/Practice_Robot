@@ -7,8 +7,13 @@ package frc.robot;
 import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+
+import edu.wpi.first.wpilibj.Timer;
+
+import frc.robot.FirstCommand;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -21,6 +26,10 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
+  private Timer commandTimer = new Timer();
+  private boolean commandRunning = false;
+  private Command FirstCommand = new FirstCommand();
+  
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -33,7 +42,10 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
+    commandTimer.reset();
+    commandTimer.start();
 
+    FirstCommand.schedule();
   }
 
   /**
@@ -46,6 +58,16 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
+    if (commandTimer.get>=5){
+      commandTimer.reset();
+      
+      if (commandRunning) {
+        FirstCommand.stop();
+      } else {
+        FirstCommand.schedule();
+      }
+    }
   }
 
   /**
