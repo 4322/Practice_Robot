@@ -27,7 +27,6 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
 
   private Timer commandTimer = new Timer();
-  private boolean commandRunning = false;
   private Command FirstCommand = new FirstCommand();
   
   /**
@@ -59,14 +58,10 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    if (commandTimer.get>=5){
+    if (commandTimer.get()>=10){
       commandTimer.reset();
       
-      if (commandRunning) {
-        FirstCommand.stop();
-      } else {
-        FirstCommand.schedule();
-      }
+      FirstCommand.schedule();
     }
   }
 

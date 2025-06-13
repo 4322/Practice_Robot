@@ -25,11 +25,12 @@ public class FirstCommand extends Command {
 
     @Override
     public boolean isFinished() {
-
+        return commandTimer.get()>=5;
     }
 
     @Override
     public void end() {
-
+        commandTimer.stop();
+        commandTimer.reset();
     }
 }
