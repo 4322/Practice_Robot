@@ -7,7 +7,7 @@ public class Message extends Command {
     
   @Override
   public void initialize() {
-    DriverStation.reportError("Hi!", false);
+    System.out.println("Hi!");
   }
 
   @Override
