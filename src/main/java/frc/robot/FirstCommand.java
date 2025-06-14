@@ -9,13 +9,16 @@ public class FirstCommand extends Command {
 
     @Override
     public void initialize() {
-        commandTimer.stop();
         commandTimer.reset();
+        commandTimer.start();
         printCount = 0;
+        System.out.println("Command initialized");
     }
 
     @Override
     public void execute() {
+        //System.out.println("Executed");
+
         if (commandTimer.get()>=1) {
             this.printCount++;
             System.out.println(this.printCount);
@@ -25,7 +28,7 @@ public class FirstCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return commandTimer.get()>=5;
+        return printCount>=5;
     }
 
     @Override

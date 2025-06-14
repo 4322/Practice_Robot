@@ -41,10 +41,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-    commandTimer.reset();
-    commandTimer.start();
-
-    FirstCommand.schedule();
+    
   }
 
   /**
@@ -58,12 +55,9 @@ public class Robot extends TimedRobot {
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
 
-    if (commandTimer.get()>=10){
-      commandTimer.reset();
-      
-      FirstCommand.schedule();
-    }
+    
   }
+  
 
   /**
    * This autonomous (along with the chooser code above) shows how to select between different
@@ -98,12 +92,23 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    System.out.println("Initialized");
+    commandTimer.reset();
+    commandTimer.start();
+
+    FirstCommand.schedule();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
-
+  public void teleopPeriodic() {
+    if (commandTimer.get()>=10){
+      commandTimer.reset();
+      
+      FirstCommand.schedule();
+    }
+  }
   /** This function is called once when the robot is disabled. */
   @Override
   public void disabledInit() {}
