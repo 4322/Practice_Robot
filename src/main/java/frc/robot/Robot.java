@@ -28,6 +28,7 @@ public class Robot extends TimedRobot {
 
   private Timer commandTimer = new Timer();
   private Command FirstCommand = new FirstCommand();
+  private int triggerCount = 0;
   
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -103,10 +104,12 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (commandTimer.get()>=10){
+    if (commandTimer.get() >= 10 && triggerCount < 2){
+      triggerCount++;
       commandTimer.reset();
-      
+
       FirstCommand.schedule();
+      System.out.println("Command scheduled");
     }
   }
   /** This function is called once when the robot is disabled. */
@@ -132,4 +135,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically whilst in simulation. */
   @Override
   public void simulationPeriodic() {}
+
+  
 }

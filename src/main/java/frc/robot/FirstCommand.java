@@ -6,13 +6,22 @@ import edu.wpi.first.wpilibj.Timer;
 public class FirstCommand extends Command {
     private Timer commandTimer = new Timer();
     private int printCount = 0;
+    private boolean triggered = false;
+    private boolean infinite = false;
+
 
     @Override
     public void initialize() {
-        commandTimer.reset();
-        commandTimer.start();
-        printCount = 0;
+        this.commandTimer.reset();
+        this.commandTimer.start();
+        this.printCount = 0;
         System.out.println("Command initialized");
+
+        if (this.triggered){
+            this.infinite = true;
+        } else {
+            this.triggered = true;
+        }
     }
 
     @Override
@@ -22,13 +31,18 @@ public class FirstCommand extends Command {
         if (commandTimer.get()>=1) {
             this.printCount++;
             System.out.println(this.printCount);
-            commandTimer.reset();
+            this.commandTimer.reset();
         }
     }
 
     @Override
     public boolean isFinished() {
-        return printCount>=5;
+        if (!infinite) {
+            return printCount>=5;
+        } else {
+            return false;
+        }
+        
     }
 
     @Override
@@ -37,4 +51,5 @@ public class FirstCommand extends Command {
         commandTimer.stop();
         commandTimer.reset();
     }
+
 }
