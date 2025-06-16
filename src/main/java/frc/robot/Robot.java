@@ -46,6 +46,7 @@ public class Robot extends TimedRobot {
   @Override
   public void robotPeriodic() {
     CommandScheduler.getInstance().run();
+
   }
 
   /**
@@ -81,7 +82,10 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    PrintCommand printCommand = new PrintCommand(); 
+    printCommand.schedule(); // Schedule the PrintCommand to run
+  }
 
   /** This function is called periodically during operator control. */
   @Override
@@ -93,7 +97,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called periodically when disabled. */
   @Override
-  public void disabledPeriodic() {}
+  public void disabledPeriodic() {
+    PrintCommand printCommand = new PrintCommand();
+  }
 
   /** This function is called once when test mode is enabled. */
   @Override
