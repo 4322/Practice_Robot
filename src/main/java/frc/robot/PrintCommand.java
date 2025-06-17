@@ -21,13 +21,10 @@ public class PrintCommand extends Command {
     @Override
     public void execute() {
         double currentTime = timer.get();
-        if (currentTime - lastPrintTime >= 1.0 && count < 5) {
+        if (currentTime - lastPrintTime >= 1.0) {
             count++;
             System.out.println("PrintCommand executed " + count + " times");
             lastPrintTime = currentTime;
-        }
-        if (count >= 5) {
-            count++;
         }
     }
 

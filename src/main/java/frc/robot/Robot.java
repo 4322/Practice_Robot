@@ -92,14 +92,33 @@ public class Robot extends TimedRobot {
   }
 
   /** This function is called periodically during operator control. */
+  public enum RobotState {
+    underFiveSeconds,
+    afterFiveSeconds,
+    afterTenSeconds;
+  }
+  RobotState robotState = RobotState.underFiveSeconds;
   @Override
   public void teleopPeriodic() {
-    if (timer.hasElapsed(5)) { // Check if the timer is between 5 and 10 seconds
-      printCommand.cancel(); // Cancel the command if it has run for more than 5 seconds
-  }
-    if (timer.hasElapsed(10)) {
-      printCommand.schedule(); // Schedule the PrintCommand to run
-      }
+   switch (robotState) {
+      case underFiveSeconds:
+        if (timer.get() >= 5.1) {
+          System.out.println("5 seconds have passed");
+          robotState = RobotState.afterFiveSeconds; // Transition to the next state
+          printCommand.cancel(); // Cancel the PrintCommand
+        }
+        break;
+      case afterFiveSeconds:
+        if (timer.get() >= 10.0) {
+          System.out.println("10 seconds have passed");
+          // You can add more logic here if needed
+          printCommand.schedule(); // Reschedule the PrintCommand if needed
+          robotState = RobotState.afterTenSeconds; // Transition to the next state
+        }
+        break;
+      case afterTenSeconds:
+        break;
+    }
   }
 
   /** This function is called once when the robot is disabled. */
