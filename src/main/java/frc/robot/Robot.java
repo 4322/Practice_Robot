@@ -4,7 +4,10 @@
 
 package frc.robot;
 
+import java.util.concurrent.CountDownLatch;
+
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -20,6 +23,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private final JacksPrintCommand jacksPrintCommand = new JacksPrintCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -63,6 +67,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    jacksPrintCommand.schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -81,7 +86,9 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+       jacksPrintCommand.schedule();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
