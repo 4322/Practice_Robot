@@ -22,6 +22,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean weee= false;
   private boolean wooo = false;
+  PrintCommand printCommand = new PrintCommand(); 
   
   public enum DaMode {
     Waiting,
@@ -37,14 +38,14 @@ public class Robot extends TimedRobot {
         System.out.println("Currently waiting.");
         if (hewoTimer.hasElapsed(5)) {
           daMode = DaMode.AfterFiverSeconds;
-          Command.cancel();
+          PrintCommand.cancel();
         }
         break;
       case AfterFiverSeconds:
         System.out.println("Five seconds have passed.");
         if (hewoTimer.hasElapsed(10)) {
           daMode = DaMode.AfterTenSeconds;
-          Command.schedule();
+          PrintCommand.schedule();
         }
         break;
       case AfterTenSeconds:
