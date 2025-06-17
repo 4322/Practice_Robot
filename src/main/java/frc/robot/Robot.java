@@ -20,6 +20,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
+  private PrintCommand printCommand;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -29,6 +30,7 @@ public class Robot extends TimedRobot {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
     SmartDashboard.putData("Auto choices", m_chooser);
+    
   }
 
   @Override
@@ -83,13 +85,21 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    PrintCommand printCommand = new PrintCommand(); 
+    printCommand = new PrintCommand();
     printCommand.schedule(); // Schedule the PrintCommand to run
   }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    PrintCommand printCommand = new PrintCommand(); 
+    if (getCurrentTime() > 5.0) {
+      printCommand.cancel(); // Cancel the command if it has run for more than 5 seconds
+  }
+    if (printCommand.currentTime >=10) {
+      printCommand.schedule(); // Schedule the PrintCommand to run
+      }
+  }
 
   /** This function is called once when the robot is disabled. */
   @Override

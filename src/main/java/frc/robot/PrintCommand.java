@@ -7,7 +7,6 @@ public class PrintCommand extends Command {
     private final Timer timer = new Timer();
     private int count = 0;
     private double lastPrintTime = 0.0;
-
     @Override
     public void initialize() {
         System.out.println("PrintCommand initialized");
@@ -33,7 +32,7 @@ public class PrintCommand extends Command {
 
     @Override
     public boolean isFinished() {
-        return timer.get() >= 5.0;
+        return count >= 5;
 
     }
 
