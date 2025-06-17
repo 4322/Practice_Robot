@@ -23,6 +23,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   PrintCommand printCommand = new PrintCommand(); 
   Timer timer = new Timer();
+  double timer1 = timer.get();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -37,7 +38,6 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-  timer.start();
   }
 
   /**
@@ -87,13 +87,14 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    timer.reset(); // Reset the timer
+    timer.start(); // Start the timer
     printCommand.schedule(); // Schedule the PrintCommand to run
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    double timer1 = timer.get();
     if (timer1 >= 5.0 && timer1 < 5.1) { // Check if the timer is between 5 and 10 seconds
       printCommand.cancel(); // Cancel the command if it has run for more than 5 seconds
   }
@@ -109,7 +110,6 @@ public class Robot extends TimedRobot {
   /** This function is called periodically when disabled. */
   @Override
   public void disabledPeriodic() {
-    PrintCommand printCommand = new PrintCommand();
   }
 
   /** This function is called once when test mode is enabled. */
