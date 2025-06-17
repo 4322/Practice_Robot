@@ -52,7 +52,7 @@ public class Robot extends TimedRobot {
         System.out.println("Seconds: " + printCount);
       }
         if (hewoTimer.hasElapsed(5)) {
-          daMode = DaMode.AfterFiverSeconds
+          daMode = DaMode.AfterFiverSeconds;
         }
         break;
       case AfterFiverSeconds:
