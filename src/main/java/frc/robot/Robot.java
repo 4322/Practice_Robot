@@ -9,7 +9,6 @@ import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 
 /**
- * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
  * this project, you must also update the Main.java file in the project.
  */
@@ -23,6 +22,38 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean weee= false;
   private boolean wooo = false;
+  
+  public enum DaMode {
+    Waiting,
+    AfterFiverSeconds,
+    AfterTenSeconds;
+  }
+
+  DaMode daMode = DaMode.Waiting;
+
+  public void checkDaMode() {
+    switch (daMode) {
+      case Waiting:
+        System.out.println("Currently waiting.");
+        if (hewoTimer.hasElapsed(5)) {
+          daMode = DaMode.AfterFiverSeconds;
+          FirstCommand.cancel();
+        }
+        break;
+      case AfterFiverSeconds:
+        System.out.println("Five seconds have passed.");
+        if (hewoTimer.hasElapsed(10)) {
+          daMode = DaMode.AfterTenSeconds;
+          FirstCommand.schedule();
+        }
+        break;
+      case AfterTenSeconds:
+        System.out.println("Ten seconds have passed.");
+        break;
+      
+    }
+  }
+  
   private Command FirstCommand = new Command() {
     
     @Override
@@ -62,9 +93,11 @@ public class Robot extends TimedRobot {
     hewoTimer.reset();}
 
     @Override
-    public boolean isFinished() { if (!wooo) {
+    public boolean isFinished() { 
+      if (!wooo) {
       return printCount>=5;
-  } else {
+  } 
+    else {
       return false;
   }
   
@@ -90,65 +123,5 @@ public class Robot extends TimedRobot {
       }
       
 
-      @Override
-  public void teleopInit() {
-    System.out.println("Initialized");
-    this.hewoTimer.reset();
-    this.hewoTimer.start(); 
-    System.out.println("This was started");
-    
-      if (this.weee){
-        this.wooo = true;
-      } else {
-        this.weee = true;
-    }
-    FirstCommand.schedule();
-  }
-
-  @Override
-  public void teleopPeriodic() {
-    if (hewoTimer.hasElapsed(1) && printCount<=4 && lastPrintTime <= 1){
-      printCount++;
-      hewoTimer.reset();
-
-      FirstCommand.schedule();
-      System.out.println("Seconds: " + printCount);
-    }
-    else if (printCount >= 5) {
-      printCount = 0;
-      hewoTimer.reset();
-      lastPrintTime++;
-    }
-  }
-  /**
-   * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
-   * that you want ran during disabled, autonomous, teleoperated and test.
-   *
-   * <p>This runs after the mode specific periodic functions, but before LiveWindow and
-   * SmartDashboard integrated updating.
-   */
-   public void execute() {
-    System.out.println("You are exicuationg the execute method");
-  if (hewoTimer.get() >= 1.0) {
-    this.printCount++;
-  
-    hewoTimer.stop();
-    hewoTimer.reset();
-  }
-}
-  public boolean isFinished() {
-    if (!wooo) {
-      return printCount>=5;
-  } else {
-      return false;
-  }
-  
-  } 
-
-  public void end(boolean interrupted) {
-    System.out.println("Command ended");
-    hewoTimer.stop();
-    hewoTimer.reset();
-}
 
   }
