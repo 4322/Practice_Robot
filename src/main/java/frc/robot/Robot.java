@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import edu.wpi.first.wpilibj.Timer;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -20,7 +21,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private PrintCommand printCommand;
+  PrintCommand printCommand = new PrintCommand(); 
+  Timer timer = new Timer();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -85,18 +87,16 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-    printCommand = new PrintCommand();
     printCommand.schedule(); // Schedule the PrintCommand to run
   }
 
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    PrintCommand printCommand = new PrintCommand(); 
-    if (getCurrentTime() > 5.0) {
+    if (timer > 5.0) {
       printCommand.cancel(); // Cancel the command if it has run for more than 5 seconds
   }
-    if (printCommand.currentTime >=10) {
+    if (timer >= 10) {
       printCommand.schedule(); // Schedule the PrintCommand to run
       }
   }
