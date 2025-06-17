@@ -48,7 +48,7 @@ public class Robot extends TimedRobot {
       }
       
 
-
+      @Override
   public void teleopInit() {
     System.out.println("Initialized");
     this.hewoTimer.reset();
@@ -63,14 +63,14 @@ public class Robot extends TimedRobot {
     FirstCommand.schedule();
   }
 
-
+  @Override
   public void teleopPeriodic() {
     if (hewoTimer.hasElapsed(1) && printCount<=4 && lastPrintTime <= 1){
       printCount++;
       hewoTimer.reset();
 
       FirstCommand.schedule();
-      System.out.println("Print count is: " + printCount);
+      System.out.println("Seconds: " + printCount);
     }
     else if (printCount >= 5) {
       printCount = 0;
@@ -85,7 +85,6 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
-
    public void execute() {
     System.out.println("You are exicuationg the execute method");
   if (hewoTimer.get() >= 1.0) {
@@ -95,7 +94,6 @@ public class Robot extends TimedRobot {
     hewoTimer.reset();
   }
 }
-
   public boolean isFinished() {
     if (!wooo) {
       return printCount>=5;
