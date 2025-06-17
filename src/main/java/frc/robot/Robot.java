@@ -14,7 +14,7 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final Timer hewoTimer = new Timer();
-  private 
+  private final Timer lastPrintTimer = new Timer();
   private double lastPrintTime = 0;
   private int printCount = 0;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
@@ -29,7 +29,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     hewoTimer.reset(); // Reset the timer
     hewoTimer.start(); // Start the timer
-    
+    lastPrintTimer.reset();
+    lastPrintTimer.start();
   }
 
   public enum DaMode {
@@ -44,19 +45,32 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     switch (daMode) {
       case Waiting:
+      if (lastPrintTimer.hasElapsed(1) && printCount < 6) {
+        lastPrintTimer.reset();
+        lastPrintTimer.start();
+        printCount++;
+        System.out.println("Seconds: " + printCount);
+      }
         if (hewoTimer.hasElapsed(5)) {
-          daMode = DaMode.AfterFiverSeconds;
-          printCommand.cancel();
+          daMode = DaMode.AfterFiverSeconds
         }
         break;
       case AfterFiverSeconds:
         if (hewoTimer.hasElapsed(10)) {
           daMode = DaMode.AfterTenSeconds;
-          printCommand.schedule();
+          
         }
         break;
       case AfterTenSeconds:
-        System.out.println("Ten seconds have passed.");
+      if (lastPrintTimer.hasElapsed(1) && printCount <= 5) {
+        lastPrintTimer.reset();
+        lastPrintTimer.start();
+        printCount++;
+        System.out.println("Seconds: " + printCount);
+      }
+      else if (printCount >= 5) {
+        printCount = 0;}
+
         break;
       
     }
