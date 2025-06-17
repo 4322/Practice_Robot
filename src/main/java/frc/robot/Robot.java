@@ -4,6 +4,8 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
+import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
@@ -20,6 +22,7 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean weee= false;
   private boolean wooo = false;
+  private Command FirstCommand = new edu.wpi.first.wpilibj2.command.InstantCommand();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -30,10 +33,24 @@ public class Robot extends TimedRobot {
     m_chooser.addOption("My Auto", kCustomAuto);
           SmartDashboard.putData("Auto choices", m_chooser);
       }
+
+
+  @Override
+  public void robotInit() {
+    
+  }
+
+  @Override
+      public void robotPeriodic() {
+        CommandScheduler.getInstance().run();
+    
+        
+      }
       
 
 
-  public void initialize() {
+  public void teleopInit() {
+    System.out.println("Initialized");
     this.hewoTimer.reset();
     this.hewoTimer.start(); 
     System.out.println("This was started");
@@ -43,8 +60,24 @@ public class Robot extends TimedRobot {
       } else {
         this.weee = true;
     }
+    FirstCommand.schedule();
   }
 
+
+  public void teleopPeriodic() {
+    if (hewoTimer.hasElapsed(1) && printCount<=4 && lastPrintTime <= 1){
+      printCount++;
+      hewoTimer.reset();
+
+      FirstCommand.schedule();
+      System.out.println("Print count is: " + printCount);
+    }
+    else if (printCount >= 5) {
+      printCount = 0;
+      hewoTimer.reset();
+      lastPrintTime++;
+    }
+  }
   /**
    * This function is called every 20 ms, no matter the mode. Use this for items like diagnostics
    * that you want ran during disabled, autonomous, teleoperated and test.
@@ -52,16 +85,17 @@ public class Robot extends TimedRobot {
    * <p>This runs after the mode specific periodic functions, but before LiveWindow and
    * SmartDashboard integrated updating.
    */
-  public void execute() {
+
+   public void execute() {
     System.out.println("You are exicuationg the execute method");
-    if (hewoTimer.hasElapsed(1))  {
+  if (hewoTimer.get() >= 1.0) {
     this.printCount++;
-    System.out.println(this.printCount);
-    this.hewoTimer.reset();
+  
+    hewoTimer.stop();
+    hewoTimer.reset();
   }
-
-
 }
+
   public boolean isFinished() {
     if (!wooo) {
       return printCount>=5;
@@ -76,4 +110,5 @@ public class Robot extends TimedRobot {
     hewoTimer.stop();
     hewoTimer.reset();
 }
-}
+
+  }
