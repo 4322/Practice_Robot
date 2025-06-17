@@ -24,6 +24,12 @@ public class Robot extends TimedRobot {
   // The existing 'printCommand' is already used in your switch statement.
   // Remove or comment out the 'myPrintCommand' declaration to avoid confusion.
   
+  @Override
+  public void teleopInit() {
+    hewoTimer.reset(); // Reset the timer
+    hewoTimer.start(); // Start the timer
+    printCommand.schedule(); // Schedule the PrintCommand to run
+  }
 
   public enum DaMode {
     Waiting,
