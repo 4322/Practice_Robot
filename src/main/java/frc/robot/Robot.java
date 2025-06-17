@@ -5,6 +5,7 @@
 package frc.robot;
 
 import edu.wpi.first.wpilibj.TimedRobot;
+import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
@@ -18,9 +19,11 @@ import edu.wpi.first.wpilibj2.command.Commands;
 public class Robot extends TimedRobot {
   private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
+  private final Timer time = new Timer();
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-
+  private final Runtime runtime = new Runtime();
+  private final Timer timer = new Timer();
   /**
    * This function is run when the robot is first started up and should be used for any
    * initialization code.
@@ -81,11 +84,29 @@ public class Robot extends TimedRobot {
 
   /** This function is called once when teleop is enabled. */
   @Override
-  public void teleopInit() {}
+  public void teleopInit() {
+    time.reset();
+    time.start();
+    timer.restart();
+    runtime.schedule();
+  }
 
   /** This function is called periodically during operator control. */
   @Override
-  public void teleopPeriodic() {}
+  public void teleopPeriodic() {
+    if (timer.hasElapsed(16)){
+    return;
+  }
+    else
+      if (time.hasElapsed(6)) {
+        runtime.cancel();
+        }
+      if (time.hasElapsed(10)) {
+        runtime.schedule();
+        time.restart();
+        }
+  
+}
 
   /** This function is called once when the robot is disabled. */
   @Override
