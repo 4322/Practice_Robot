@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
 
+
 public class commandCreation extends Command {
     // Add any required subsystem dependencies here
     private final Timer hewoTimer = new Timer();
@@ -13,6 +14,9 @@ public class commandCreation extends Command {
     // private final SendableChooser<String> m_chooser = new SendableChooser<>();
     private boolean weee= false;
     private boolean wooo = false;
+    // Declare FirstCommand as a Command object
+    private Command FirstCommand;
+
     public enum DaMode {
       Waiting,
       AfterFiverSeconds,
@@ -21,13 +25,20 @@ public class commandCreation extends Command {
   
     DaMode daMode = DaMode.Waiting;
   
+    // Add a setter or constructor to initialize FirstCommand as needed
+    public void setFirstCommand(Command command) {
+      this.FirstCommand = command;
+    }
+
     public void checkDaMode() {
       switch (daMode) {
         case Waiting:
           System.out.println("Currently waiting.");
           if (hewoTimer.hasElapsed(5)) {
             daMode = DaMode.AfterFiverSeconds;
-            FirstCommand.cancel();
+            if (FirstCommand != null) {
+              FirstCommand.cancel();
+            }
           }
           break;
         case AfterFiverSeconds:
@@ -44,106 +55,37 @@ public class commandCreation extends Command {
       }
     }
     
-    private Command FirstCommand = new Command() {
-      
-      @Override
-      public void initialize() {
-        hewoTimer.reset();
-        hewoTimer.start(); 
-      System.out.println("This was started");
-      
-        if (weee){
-         wooo = true;
-        } else {
-          weee = true;
-      }
-       FirstCommand.schedule();
-      }
-  
-      @Override
-      public void execute() {
-        while (lastPrintTime <= 1){
-        if (hewoTimer.hasElapsed(1) && printCount<=4 && lastPrintTime <= 1){
-          printCount++;
-          hewoTimer.reset();
-          System.out.println("Seconds: " + printCount);
-        }
-        else if (printCount >= 5) {
-          printCount = 0;
-          hewoTimer.reset();
-          lastPrintTime++;
-        }
-      }
-      }
-  
-      @Override
-      public void end(boolean interrupted) {
-      System.out.println("Command ended");
-      hewoTimer.stop();
-      hewoTimer.reset();}
-  
-      @Override
-      public boolean isFinished() { 
-        if (!wooo) {
-        return printCount>=5;
-    } 
-      else {
-        return false;
-    }
+    public class PrintCommand extends Command {
+        private int printCount = 0;
+        private double lastPrintTime = 0;
+        private final Timer timer = new Timer();
     
-    } 
-    }; // End of FirstCommand anonymous class
-    @Override
-    public void initialize() {
-      hewoTimer.reset();
-      hewoTimer.start(); 
-    System.out.println("This was started");
-    
-      if (this.weee){
-       this.wooo = true;
-      } else {
-        this.weee = true;
-    }
-    
-    }
-
-    @Override
-    public void execute() {
-      if (lastPrintTimer.hasElapsed(10) && lastPrintTime <= 1) {
-        if (hewoTimer.hasElapsed(1)){
-          printCount++;
-          hewoTimer.reset();
-          System.out.println("Seconds: " + printCount);
+        @Override
+        public void initialize() {
+            printCount = 0;
+            lastPrintTime = 0;
+            timer.reset();
+            timer.start();
         }
-      }
-      else{
-      while (lastPrintTime <= 1){
-      if (hewoTimer.hasElapsed(1) && printCount<=4 && lastPrintTime <= 0){
-        printCount++;
-        hewoTimer.reset();
-        System.out.println("Seconds: " + printCount);
-      }
-      else if (printCount >= 5) {
-        printCount = 0;
-        hewoTimer.reset();
-        lastPrintTime++;
-      }
-    }
-    }
-  }
-
-
-    @Override
-    public void end(boolean interrupted) {
-        System.out.println("PrintCommand ended after " + printCount + " prints");
-        hewoTimer.stop();
-        hewoTimer.reset();
-        return;
-    }
-
-    @Override
-    public boolean isFinished() {
-        return false;
+    
+        @Override
+        public void execute() {
+            if (timer.get() - lastPrintTime >= 1.0) {
+                printCount++;
+                System.out.println("Printed " + printCount + " times since scheduled.");
+                lastPrintTime = timer.get();
+            }
+        }
+    
+        @Override
+        public void end(boolean interrupted) {
+            timer.stop();
+        }
+    
+        @Override
+        public boolean isFinished() {
+            return false;
+        }
     }
   
   } 

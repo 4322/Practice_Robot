@@ -4,14 +4,11 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
-import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
+import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 
-/**
- * the TimedRobot documentation. If you change the name of this class or the package after creating
- * this project, you must also update the Main.java file in the project.
- */
+ 
 public class Robot extends TimedRobot { 
     private static final String kDefaultAuto = "Default";
   private static final String kCustomAuto = "My Auto";
@@ -22,8 +19,12 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean weee= false;
   private boolean wooo = false;
-  PrintCommand printCommand = new PrintCommand(); 
+  public PrintCommand printCommand = new PrintCommand("Hello from PrintCommand!"); 
+  // No need to add another PrintCommand here.
+  // The existing 'printCommand' is already used in your switch statement.
+  // Remove or comment out the 'myPrintCommand' declaration to avoid confusion.
   
+
   public enum DaMode {
     Waiting,
     AfterFiverSeconds,
@@ -38,14 +39,14 @@ public class Robot extends TimedRobot {
         System.out.println("Currently waiting.");
         if (hewoTimer.hasElapsed(5)) {
           daMode = DaMode.AfterFiverSeconds;
-          PrintCommand.cancel();
+          printCommand.cancel();
         }
         break;
       case AfterFiverSeconds:
         System.out.println("Five seconds have passed.");
         if (hewoTimer.hasElapsed(10)) {
           daMode = DaMode.AfterTenSeconds;
-          PrintCommand.schedule();
+          printCommand.schedule();
         }
         break;
       case AfterTenSeconds:
