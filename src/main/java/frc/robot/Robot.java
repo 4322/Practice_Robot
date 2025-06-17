@@ -7,6 +7,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 
+
 /**
  * The methods in this class are called automatically corresponding to each mode, as described in
  * the TimedRobot documentation. If you change the name of this class or the package after creating
@@ -22,18 +23,59 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean weee= false;
   private boolean wooo = false;
-  private Command FirstCommand = new edu.wpi.first.wpilibj2.command.InstantCommand();
+  private Command FirstCommand = new Command() {
+    
+    @Override
+    public void initialize() {
+      hewoTimer.reset();
+      hewoTimer.start(); 
+    System.out.println("This was started");
+    
+      if (weee){
+       wooo = true;
+      } else {
+        weee = true;
+    }
+     FirstCommand.schedule();
+    }
 
-  /**
-   * This function is run when the robot is first started up and should be used for any
-   * initialization code.
-   */
+    @Override
+    public void execute() {
+      while (lastPrintTime <= 1){
+      if (hewoTimer.hasElapsed(1) && printCount<=4 && lastPrintTime <= 1){
+        printCount++;
+        hewoTimer.reset();
+        System.out.println("Seconds: " + printCount);
+      }
+      else if (printCount >= 5) {
+        printCount = 0;
+        hewoTimer.reset();
+        lastPrintTime++;
+      }
+    }
+    }
+
+    @Override
+    public void end(boolean interrupted) {
+    System.out.println("Command ended");
+    hewoTimer.stop();
+    hewoTimer.reset();}
+
+    @Override
+    public boolean isFinished() { if (!wooo) {
+      return printCount>=5;
+  } else {
+      return false;
+  }
+  
+  } 
+  }; // End of FirstCommand anonymous class
+  
   public Robot() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
     m_chooser.addOption("My Auto", kCustomAuto);
-          SmartDashboard.putData("Auto choices", m_chooser);
-      }
-
+    SmartDashboard.putData("Auto choices", m_chooser);
+  }
 
   @Override
   public void robotInit() {
