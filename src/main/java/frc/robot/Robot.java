@@ -37,14 +37,14 @@ public class Robot extends TimedRobot {
         System.out.println("Currently waiting.");
         if (hewoTimer.hasElapsed(5)) {
           daMode = DaMode.AfterFiverSeconds;
-          FirstCommand.cancel();
+          Command.cancel();
         }
         break;
       case AfterFiverSeconds:
         System.out.println("Five seconds have passed.");
         if (hewoTimer.hasElapsed(10)) {
           daMode = DaMode.AfterTenSeconds;
-          FirstCommand.schedule();
+          Command.schedule();
         }
         break;
       case AfterTenSeconds:
@@ -54,55 +54,6 @@ public class Robot extends TimedRobot {
     }
   }
   
-  private Command FirstCommand = new Command() {
-    
-    @Override
-    public void initialize() {
-      hewoTimer.reset();
-      hewoTimer.start(); 
-    System.out.println("This was started");
-    
-      if (weee){
-       wooo = true;
-      } else {
-        weee = true;
-    }
-     FirstCommand.schedule();
-    }
-
-    @Override
-    public void execute() {
-      while (lastPrintTime <= 1){
-      if (hewoTimer.hasElapsed(1) && printCount<=4 && lastPrintTime <= 1){
-        printCount++;
-        hewoTimer.reset();
-        System.out.println("Seconds: " + printCount);
-      }
-      else if (printCount >= 5) {
-        printCount = 0;
-        hewoTimer.reset();
-        lastPrintTime++;
-      }
-    }
-    }
-
-    @Override
-    public void end(boolean interrupted) {
-    System.out.println("Command ended");
-    hewoTimer.stop();
-    hewoTimer.reset();}
-
-    @Override
-    public boolean isFinished() { 
-      if (!wooo) {
-      return printCount>=5;
-  } 
-    else {
-      return false;
-  }
-  
-  } 
-  }; // End of FirstCommand anonymous class
   
   public Robot() {
     m_chooser.setDefaultOption("Default Auto", kDefaultAuto);
