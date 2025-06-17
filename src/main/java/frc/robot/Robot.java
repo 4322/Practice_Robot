@@ -36,7 +36,7 @@ public class Robot extends TimedRobot {
   public void initialize() {
     this.hewoTimer.reset();
     this.hewoTimer.start(); 
-
+    System.out.println("This was started");
     
       if (this.weee){
         this.wooo = true;
@@ -53,7 +53,8 @@ public class Robot extends TimedRobot {
    * SmartDashboard integrated updating.
    */
   public void execute() {
-    if (this.hewoTimer.hasElapsed(1))  {
+    System.out.println("You are exicuationg the execute method");
+    if (hewoTimer.hasElapsed(1))  {
     this.printCount++;
     System.out.println(this.printCount);
     this.hewoTimer.reset();
