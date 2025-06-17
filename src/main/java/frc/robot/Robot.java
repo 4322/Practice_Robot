@@ -37,7 +37,7 @@ public class Robot extends TimedRobot {
 
   @Override
   public void robotInit() {
-
+  timer.start();
   }
 
   /**
@@ -93,10 +93,11 @@ public class Robot extends TimedRobot {
   /** This function is called periodically during operator control. */
   @Override
   public void teleopPeriodic() {
-    if (timer > 5.0) {
+    double timer1 = timer.get();
+    if (timer1 > 5.0) {
       printCommand.cancel(); // Cancel the command if it has run for more than 5 seconds
   }
-    if (timer >= 10) {
+    if (timer1 >= 10) {
       printCommand.schedule(); // Schedule the PrintCommand to run
       }
   }
