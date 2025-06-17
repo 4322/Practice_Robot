@@ -94,7 +94,7 @@ public class Robot extends TimedRobot {
   @Override
   public void teleopPeriodic() {
     double timer1 = timer.get();
-    if (timer1 > 5.0) {
+    if (timer1 >= 5.0 && timer1 < 5.1) { // Check if the timer is between 5 and 10 seconds
       printCommand.cancel(); // Cancel the command if it has run for more than 5 seconds
   }
     if (timer1 >= 10) {

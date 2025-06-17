@@ -7,26 +7,24 @@ public class PrintCommand extends Command {
     private final Timer timer = new Timer();
     private int count = 0;
     private double lastPrintTime = 0.0;
+    private double currentTime = 0.0;
     @Override
     public void initialize() {
         System.out.println("PrintCommand initialized");
         count = 0;
+        lastPrintTime = 0.0;
+        currentTime = 0.0;
         timer.reset();
         timer.start();
-        lastPrintTime = 0.0;
     }
 
     @Override
     public void execute() {
         double currentTime = timer.get();
-        if (currentTime - lastPrintTime >= 1.0 || count >= 10) {
+        if (currentTime - lastPrintTime >= 1.0) {
             count++;
             System.out.println("PrintCommand executed " + count + " times");
             lastPrintTime = currentTime;
-        }
-        if (count >= 5 && count < 10) {
-            System.out.println("PrintCommand has printed 5 times, ending command.");
-            count++;
         }
     }
 
