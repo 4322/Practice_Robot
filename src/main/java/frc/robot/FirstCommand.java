@@ -36,7 +36,7 @@ public class FirstCommand extends Command {
         double currentTime = hewoTimer.get();
         if (currentTime - lastPrintTime >= 1.0) {
             printCount++;
-            System.out.println("This Program " +  currentInstance + " executed " + printCount + " times");
+            System.out.println("This Instance " +  currentInstance + " executed " + printCount + " times");
             lastPrintTime = currentTime;
             
         }
@@ -44,7 +44,7 @@ public class FirstCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("This Program" + currentInstance + "ended after " + printCount + " prints");
+        System.out.println("This Instance " + currentInstance + " ended after " + printCount + " prints");
         hewoTimer.stop();
     }
     }

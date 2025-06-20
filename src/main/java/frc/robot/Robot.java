@@ -49,12 +49,6 @@ public class Robot extends TimedRobot {
   public void teleopPeriodic() {
     switch (daMode) {
       case Waiting:
-      if (lastPrintTimer.hasElapsed(1) && printCount < 6) {
-        lastPrintTimer.reset();
-        lastPrintTimer.start();
-        printCount++;
-        System.out.println("Seconds: " + printCount);
-      }
       if (hewoTimer.hasElapsed(5.1)) {
         daMode = DaMode.AfterFiverSeconds;
         
@@ -62,19 +56,19 @@ public class Robot extends TimedRobot {
       }
         break;
       case AfterFiverSeconds:
-      if (hewoTimer.hasElapsed(10.1)) {
+      if (hewoTimer.hasElapsed(10.2)) {
           daMode = DaMode.AfterTenSeconds;
           printCount = 0;  
           Command.cancel();      }
         break;
       case AfterTenSeconds:
-      if (hewoTimer.hasElapsed(15.1)) {
+      if (hewoTimer.hasElapsed(15.2)) {
         Command.schedule();
       }
 
         break;
       case After15Seconds:
-      if (hewoTimer.hasElapsed(20.1)) {
+      if (hewoTimer.hasElapsed(20.2)) {
       }
         break;
       
