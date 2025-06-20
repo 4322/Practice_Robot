@@ -37,7 +37,7 @@ public class FirstCommand extends Command {
             hewoTimer.reset();
             hewoTimer.start();
             printCount++;
-            System.out.println("Seconds: " + printCount);
+            System.out.println(printCount);
           }
     }
 
