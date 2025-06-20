@@ -18,7 +18,7 @@ public class FirstCommand extends Command {
     int currentInstance;
   
     public FirstCommand() {
-        this.currentInstance = nextInstance++;
+        
     }
   
 // Add a setter or constructor to initialize FirstCommand as needed
@@ -33,19 +33,24 @@ public class FirstCommand extends Command {
 
     @Override
     public void execute() {
-        double currentTime = hewoTimer.get();
-        if (currentTime - lastPrintTime >= 1.0) {
+        if (lastPrintTimer.hasElapsed(1) && printCount < 6) {
+            lastPrintTimer.reset();
+            lastPrintTimer.start();
             printCount++;
-            System.out.println("This Program" +  currentInstance + "executed " + printCount + " times");
-            lastPrintTime = currentTime;
-            
-        }
+            System.out.println("Seconds: " + printCount);
+          }
     }
+
+   
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("This Program" + currentInstance + "ended after " + printCount + " prints");
+
         hewoTimer.stop();
+    }
+    @Override
+    public boolean isFinished() {
+        return false;
     }
     }
 
