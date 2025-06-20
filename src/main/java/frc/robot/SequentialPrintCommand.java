@@ -23,17 +23,17 @@ public class SequentialPrintCommand extends Command {
         if (runningInstance != null) {
             System.out.println("Incoming SequentialPrintCommand Instance number " + currentInstance + " is canceled because instance number " + runningInstance.currentInstance + " is already running");
             CommandScheduler.getInstance().cancel(this);
+            return;
         } 
         else {
             System.out.println("SequentialPrintCommand Instance number " + currentInstance + " is scheduled");
             runningInstance = this;
         }
-        System.out.println("SequentialPrintCommand initialized");
+        System.out.println("SequentialPrintCommand instance number " + currentInstance + " is initialized ");
         count = 0;
         lastPrintTime = 0.0;
         currentTime = 0.0;
-        timer.reset();
-        timer.start();
+        timer.restart();
     }
 
     @Override
@@ -58,7 +58,7 @@ public class SequentialPrintCommand extends Command {
         if (runningInstance == this) {
             runningInstance = null; // Clear the running instance when this command ends
             System.out.println("SequentialPrintCommand Instance number " + currentInstance + " ended after " + count + " prints");
-            timer.stop();
         }
+        timer.stop();
     }
 }
