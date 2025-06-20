@@ -24,7 +24,6 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final JacksPrintCommand jacksPrintCommand = new JacksPrintCommand();
-  private final Timer timer = new Timer();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -68,6 +67,7 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
+    jacksPrintCommand.schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -87,9 +87,7 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
-      timer.reset();
-      timer.start();
-      jacksPrintCommand.schedule();
+       jacksPrintCommand.schedule();
   }
 
   public enum RobotState {
@@ -124,17 +122,10 @@ private void updateRobotState() {
                 transitionToState(RobotState.AFTER_TEN_SECONDS);
             }
             break;
-            case AFTER_TEN_SECONDS:
-            if (!hasTransitionedOnce) {
-                timer.reset();
-                transitionToState(RobotState.BEFORE_FIVE_SECONDS);
-            } else {
-                
-                timer.reset();
-                robotState = RobotState.BEFORE_FIVE_SECONDS;
-            }
+        case AFTER_TEN_SECONDS:
+            timer.reset();
+            transitionToState(RobotState.BEFORE_FIVE_SECONDS);
             break;
-        
     }
 }
 
