@@ -108,15 +108,14 @@ public class Robot extends TimedRobot {
         if (timer.get() >= 5.1) {
           System.out.println("5 seconds have passed");
           robotState = RobotState.afterFiveSeconds; // Transition to the next state 
-          printCommand2.schedule(); // Schedule the second PrintCommand
+          printCommand.cancel(); // Schedule the second PrintCommand
         }
         break;
       case afterFiveSeconds:
         if (timer.get() >= 10.1) {
           System.out.println("10 seconds have passed");
           // You can add more logic here if needed
-          printCommand.cancel(); // Cancel the first PrintCommand
-          printCommand2.schedule(); // Reschedule the PrintCommand if needed
+          printCommand.schedule(); // Reschedule the PrintCommand if needed
           robotState = RobotState.afterTenSeconds; // Transition to the next state
         }
         break;
@@ -124,7 +123,7 @@ public class Robot extends TimedRobot {
       if (timer.get() >= 15.1) {
           System.out.println("15 seconds have passed");
           // You can add more logic here if needed
-          printCommand.schedule(); // Cancel the second PrintCommand
+          printCommand2.cancel(); // Cancel the second PrintCommand
           robotState = RobotState.afterFifteenSeconds; // Reset to the initial state
         }
         break;
