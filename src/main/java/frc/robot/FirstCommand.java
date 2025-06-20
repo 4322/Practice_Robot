@@ -32,7 +32,6 @@ public class FirstCommand extends Command {
         hewoTimer.start();
 
         if (runningInstance != null) {
-            System.out.println("Error: Instance number " + currentInstance + " tried to start, but instance " + runningInstance.currentInstance + " is already running.");
             CommandScheduler.getInstance().cancel(this);
             return;
         } else {
