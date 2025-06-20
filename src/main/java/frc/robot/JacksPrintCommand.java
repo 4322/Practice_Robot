@@ -1,3 +1,4 @@
+
 package frc.robot;
 
 import edu.wpi.first.wpilibj.Timer;
@@ -16,6 +17,7 @@ public class JacksPrintCommand extends Command {
     @Override
     public void initialize() {
         count = 0;
+        hasReset = false;
         hasReset = false;
         timer.reset();
         timer.start();
