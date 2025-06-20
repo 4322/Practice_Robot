@@ -44,7 +44,7 @@ public class FirstCommand extends Command {
         @Override
         public void execute() {
 
-            if (runningInstance != this) {
+            if (runningInstance == null) {
                 runningInstance = this;
                 System.out.println("Instance " + currentInstance + " started executing");
                 return;

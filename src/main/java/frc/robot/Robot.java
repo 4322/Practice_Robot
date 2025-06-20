@@ -65,7 +65,7 @@ public class Robot extends TimedRobot {
         break;
       case AfterTenSeconds:
       if (hewoTimer.hasElapsed(15)) {
-        Command2.schedule();
+        Command2.cancel();
         daMode = DaMode.AfterFifteenSeconds;
               }
         break;
