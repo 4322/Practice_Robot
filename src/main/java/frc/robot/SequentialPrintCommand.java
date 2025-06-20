@@ -15,15 +15,19 @@ public class SequentialPrintCommand extends Command {
     public SequentialPrintCommand() {
         this.currentInstance = nextInstance++;
     }
+    public static SequentialPrintCommand runningInstance = null;
+
     
     @Override
     public void initialize() {
-        boolean isScheduled = CommandScheduler.getInstance().isScheduled(this);
-        if (isScheduled) {
-            System.out.println("SequentialPrintCommand Instance number " + currentInstance + " is already scheduled");
-        } else {
+        if (runningInstance != null) {
+            System.out.println("SequentialPrintCommand Instance number " + runningInstance.currentInstance + " is already scheduled, cancelling current instance " + currentInstance);
+            CommandScheduler.getInstance().cancel(this);
+        } 
+        if (runningInstance == null){
             System.out.println("SequentialPrintCommand Instance number " + currentInstance + " is not scheduled, scheduling now");
             CommandScheduler.getInstance().schedule(this);
+            runningInstance = this;
     }
         System.out.println("SequentialPrintCommand initialized");
         count = 0;
@@ -35,11 +39,13 @@ public class SequentialPrintCommand extends Command {
 
     @Override
     public void execute() {
+        if (runningInstance == this)  {
         double currentTime = timer.get();
         if (currentTime - lastPrintTime >= 1.0) {
             count++;
-            System.out.println("SequentialPrintCommand Instance numer " +  currentInstance + " executed " + count + " times");
-            lastPrintTime = currentTime;
+            System.out.println("SequentialPrintCommand Instance number " +  currentInstance + " executed " + count + " times");
+            lastPrintTime = currentTime; 
+            }
         }
     }
 
@@ -50,7 +56,10 @@ public class SequentialPrintCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("SequentialPrintCommand Instance number " + currentInstance + " ended after " + count + " prints");
-        timer.stop();
+        if (runningInstance == this) {
+            runningInstance = null; // Clear the running instance when this command ends
+            System.out.println("SequentialPrintCommand Instance number " + currentInstance + " ended after " + count + " prints");
+            timer.stop();
+        }
     }
 }
