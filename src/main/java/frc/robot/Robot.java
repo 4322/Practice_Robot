@@ -9,6 +9,7 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.Commands;
+import frc.robot.Subsystems.DummySubsystem;
 import edu.wpi.first.wpilibj.Timer;
 
 /**
@@ -21,8 +22,9 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  SequentialPrintCommand sequentialPrintCommand = new SequentialPrintCommand(); 
-  SequentialPrintCommand sequentialPrintCommand2 = new SequentialPrintCommand();
+  DummySubsystem DummySubsystem = new DummySubsystem(); // Create an instance of the DummySubsystem
+  SequentialPrintCommand sequentialPrintCommand = new SequentialPrintCommand(DummySubsystem); 
+  SequentialPrintCommand sequentialPrintCommand2 = new SequentialPrintCommand(DummySubsystem);
   Timer timer = new Timer();
 
   /**

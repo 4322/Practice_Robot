@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-
+import frc.robot.Subsystems.DummySubsystem;
 public class SequentialPrintCommand extends Command {
     private final Timer timer = new Timer();
     private int count;
@@ -11,10 +11,15 @@ public class SequentialPrintCommand extends Command {
     private double currentTime;
     private static int nextInstance = 1; 
     private int currentInstance;
+    private final DummySubsystem subsystem1;
 
-    public SequentialPrintCommand() {
+    public SequentialPrintCommand(DummySubsystem subsystem1) {
         this.currentInstance = nextInstance++;
+        this.subsystem1 = subsystem1;
+        addRequirements(subsystem1);
     }
+
+
     private static SequentialPrintCommand runningInstance = null;
 
     
