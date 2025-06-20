@@ -21,7 +21,7 @@ public class SequentialPrintCommand extends Command {
     @Override
     public void initialize() {
         if (runningInstance != null) {
-            System.out.println("SequentialPrintCommand instance number " + currentInstance + " is waiting for SequentialPrintCommand instace number " +
+            System.out.println("SequentialPrintCommand instance number " + currentInstance + " is waiting for SequentialPrintCommand instance number " +
                                runningInstance.currentInstance + " to finish");
         } else {
             System.out.println("SequentialPrintCommand instance number " + currentInstance + " is now the running instance");
@@ -29,8 +29,7 @@ public class SequentialPrintCommand extends Command {
 
         count = 0;
         lastPrintTime = 0.0;
-        timer.reset();
-        timer.start();
+        timer.restart();
     }
 
     @Override
