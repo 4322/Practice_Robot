@@ -6,7 +6,6 @@ import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
 import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
-import edu.wpi.first.wpilibj2.command.PrintCommand;
 
 
  
@@ -21,8 +20,8 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean weee= false;
   private boolean wooo = false;
-  FirstCommand Command = new Command(); 
-  Command Command2 = new Command();
+  FirstCommand Command = new FirstCommand(); 
+  Command Command2 = new FirstCommand();
   // No need to add another PrintCommand here.
   // The existing 'printCommand' is already used in your switch statement.
   // Remove or comment out the 'myPrintCommand' declaration to avoid confusion.
@@ -33,6 +32,8 @@ public class Robot extends TimedRobot {
     hewoTimer.start(); // Start the timer
     lastPrintTimer.reset();
     lastPrintTimer.start();
+    Command.schedule(); // Schedule the PrintCommand to run
+    Command2.schedule();
   }
 
   public enum DaMode {
