@@ -56,14 +56,14 @@ public class Robot extends TimedRobot {
       }
         if (hewoTimer.hasElapsed(5.1)) {
           daMode = DaMode.AfterFiverSeconds;
-          Command.cancel();
+          Command2.cancel();
         }
         break;
       case AfterFiverSeconds:
         if (hewoTimer.hasElapsed(10)) {
           daMode = DaMode.AfterTenSeconds;
           printCount = 0;  
-          Command.schedule();      }
+          Command2.schedule();      }
         break;
       case AfterTenSeconds:
       if (lastPrintTimer.hasElapsed(1)) {
