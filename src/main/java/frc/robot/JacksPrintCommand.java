@@ -6,6 +6,7 @@ import edu.wpi.first.wpilibj2.command.Command;
 public class JacksPrintCommand extends Command {
     private final Timer timer = new Timer();
     private int count = 0;
+    private static int instance1 = 0;
 
     @Override
     public void initialize() {
@@ -20,7 +21,9 @@ public class JacksPrintCommand extends Command {
 
         if (elapsed >= count) {
             count++;
-            System.out.println("Message Printed " + count + " times.");
+            instance1++;
+            System.out.println("Instance 1, message " + instance1 + ".");
+            System.out.println("Instance 2, message " + count + ".");
         }
     }
 
