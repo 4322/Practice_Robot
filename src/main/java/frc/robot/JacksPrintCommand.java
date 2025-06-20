@@ -7,6 +7,11 @@ public class JacksPrintCommand extends Command {
     private final Timer timer = new Timer();
     private int count = 0;
     private boolean hasReset = false;
+    private final int instanceId;
+
+    public JacksPrintCommand(int instanceId) {
+        this.instanceId = instanceId;
+    }
 
     @Override
     public void initialize() {
@@ -29,18 +34,18 @@ public class JacksPrintCommand extends Command {
                 hasReset = true;
             }
 
-            System.out.println("Message Printed " + count + " times.");
+            System.out.println("Instance " + instanceId + ", message " + count);
         }
     }
 
     @Override
     public boolean isFinished() {
-        return false; // Run indefinitely
+        return false;
     }
 
     @Override
     public void end(boolean interrupted) {
         timer.stop();
-        System.out.println("PrintCommand stopped.");
+        System.out.println("Instance " + instanceId + " stopped.");
     }
 }

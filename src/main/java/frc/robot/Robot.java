@@ -23,8 +23,12 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  private final JacksPrintCommand jacksPrintCommand = new JacksPrintCommand();
+
+  private final JacksPrintCommand jacksPrintCommand1 = new JacksPrintCommand(1);
+  private final JacksPrintCommand jacksPrintCommand2 = new JacksPrintCommand(2);
   private final Timer timer = new Timer();
+  private boolean cancelled = false;
+  private boolean rescheduled = false;
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -68,7 +72,6 @@ public class Robot extends TimedRobot {
     m_autoSelected = m_chooser.getSelected();
     // m_autoSelected = SmartDashboard.getString("Auto Selector", kDefaultAuto);
     System.out.println("Auto selected: " + m_autoSelected);
-    jacksPrintCommand.schedule();
   }
 
   /** This function is called periodically during autonomous. */
@@ -90,76 +93,33 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     timer.reset();
     timer.start();
-       jacksPrintCommand.schedule();
+       jacksPrintCommand1.schedule();
+       jacksPrintCommand2.schedule();
+       timer.reset();
+       timer.start();
+       cancelled = false;
+       rescheduled = false;
   }
-
-  public enum RobotState {
-    BEFORE_FIVE_SECONDS,
-    BETWEEN_FIVE_AND_TEN_SECONDS,
-    AFTER_TEN_SECONDS;
-}
-
-RobotState robotState = RobotState.BEFORE_FIVE_SECONDS;
-private static final double FIVE_SECOND_THRESHOLD = 5.1;
-private static final double TEN_SECOND_THRESHOLD = 10.0;
-
-private boolean hasReset = false;
-private boolean hasTransitionedOnce = false;
 
 @Override
 public void teleopPeriodic() {
-    updateRobotState();
-}
+    double t = timer.get();
 
-private void updateRobotState() {
-    double timeElapsed = timer.get();
-
-    switch (robotState) {
-        case BEFORE_FIVE_SECONDS:
-            if (timeElapsed >= FIVE_SECOND_THRESHOLD) {
-                transitionToState(RobotState.BETWEEN_FIVE_AND_TEN_SECONDS);
-            }
-            break;
-        case BETWEEN_FIVE_AND_TEN_SECONDS:
-            if (timer.get() >= TEN_SECOND_THRESHOLD){
-                transitionToState(RobotState.AFTER_TEN_SECONDS);
-            }
-            
-            break;
-        case AFTER_TEN_SECONDS:
-            timer.reset();
-            transitionToState(RobotState.BEFORE_FIVE_SECONDS);
-            break;
+    if (t >= 5.0 && !cancelled) {
+        jacksPrintCommand2.cancel();
+        cancelled = true;
+        System.out.println("Cancelled Instance 2 at 5 seconds");
     }
+
+    if (t >= 10.0 && !rescheduled) {
+        jacksPrintCommand2.schedule();
+        rescheduled = true;
+        System.out.println("Rescheduled Instance 2 at 10 seconds");
+    }
+
+    CommandScheduler.getInstance().run();
 }
 
-private void transitionToState(RobotState newState) {
-  if (hasTransitionedOnce) return;
-
-  robotState = newState;
-  System.out.println(newState + " reached");
-
-  switch (newState) {
-      case BETWEEN_FIVE_AND_TEN_SECONDS:
-          if (!hasReset){
-              jacksPrintCommand.cancel();
-          }
-          break;
-      case AFTER_TEN_SECONDS:
-          if (!hasReset){
-              jacksPrintCommand.schedule();
-          }
-          break;
-      case BEFORE_FIVE_SECONDS:
-          if (!hasReset) {
-              hasReset = true;
-              hasTransitionedOnce = true;
-          }
-          break;
-      default:
-          break;
-  }
-}
 
 
   /** This function is called once when the robot is disabled. */
