@@ -22,7 +22,7 @@ public class FirstCommand extends Command {
         this.currentInstance = nextInstance++;
     }
     private static FirstCommand runningInstance = null;
-// Add a setter or constructor to initialize FirstCommand as needed
+
 
     @Override
     public void initialize() {
@@ -32,31 +32,37 @@ public class FirstCommand extends Command {
         hewoTimer.start();
 
         if (runningInstance != null) {
+            System.out.println("Instance " + currentInstance + " is waiting for Instance " +
+                               runningInstance.currentInstance + " to finish");
             CommandScheduler.getInstance().cancel(this);
             return;
         } else {
             System.out.println("Instance  " + currentInstance + " is scheduled");
             runningInstance = this;
         }
-    }    
+
+        }    
         @Override
         public void execute() {
-            // Only allow the running instance to execute
+
             if (runningInstance != this) {
+                runningInstance = this;
+                System.out.println("Instance " + currentInstance + " started executing");
                 return;
             }
             double currentTime = hewoTimer.get();
-            if (currentTime - lastPrintTime >= 1.0) {
-                printCount++;
-                System.out.println("This Instance " +  currentInstance + " executed " + printCount + " times");
-                lastPrintTime = currentTime;
+            if (runningInstance == this) {
+                if (currentTime - lastPrintTime >= 1.0) {
+                    printCount++;
+                    System.out.println("This Instance " +  currentInstance + " executed " + printCount + " times");
+                    lastPrintTime = currentTime;
+                }
             }
         }
     
         @Override
         public void end(boolean interrupted) {
             hewoTimer.stop();
-            // If this instance is ending, clear the runningInstance reference
             if (runningInstance == this) {
                 runningInstance = null;
             }
@@ -64,7 +70,6 @@ public class FirstCommand extends Command {
     
         @Override
         public boolean isFinished() {
-            // Never finishes on its own
             return false;
         }
     }
