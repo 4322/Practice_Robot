@@ -124,10 +124,17 @@ private void updateRobotState() {
                 transitionToState(RobotState.AFTER_TEN_SECONDS);
             }
             break;
-        case AFTER_TEN_SECONDS:
-            timer.reset();
-            transitionToState(RobotState.BEFORE_FIVE_SECONDS);
+            case AFTER_TEN_SECONDS:
+            if (!hasTransitionedOnce) {
+                timer.reset();
+                transitionToState(RobotState.BEFORE_FIVE_SECONDS);
+            } else {
+                
+                timer.reset();
+                robotState = RobotState.BEFORE_FIVE_SECONDS;
+            }
             break;
+        
     }
 }
 
