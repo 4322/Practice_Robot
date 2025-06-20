@@ -14,8 +14,12 @@ public class FirstCommand extends Command {
     // private final SendableChooser<String> m_chooser = new SendableChooser<>();
     private boolean weee= false;
     private boolean wooo = false;
+    static int nextInstance = 1; 
+    int currentInstance;
   
-    
+    public FirstCommand() {
+        this.currentInstance = nextInstance++;
+    }
   
 // Add a setter or constructor to initialize FirstCommand as needed
 
@@ -29,23 +33,26 @@ public class FirstCommand extends Command {
 
     @Override
     public void execute() {
-        if (hewoTimer.get() - lastPrintTime >= 1.0) {
+        double currentTime = hewoTimer.get();
+        if (currentTime - lastPrintTime >= 1.0) {
             printCount++;
-            System.out.println("Printed " + printCount + " times since scheduled.");
-            lastPrintTime = hewoTimer.get();
+            System.out.println("This Program" +  currentInstance + "executed " + printCount + " times");
+            lastPrintTime = currentTime;
+            
         }
     }
 
     @Override
     public void end(boolean interrupted) {
+        System.out.println("This Program" + currentInstance + "ended after " + printCount + " prints");
         hewoTimer.stop();
     }
-
-    @Override
-    public boolean isFinished() {
-        return false;
     }
-}
-// End of commandCreation class
 
 
+
+
+    
+    
+
+ 

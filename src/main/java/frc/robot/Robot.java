@@ -51,22 +51,25 @@ public class Robot extends TimedRobot {
         printCount++;
         System.out.println("Seconds: " + printCount);
       }
-        if (hewoTimer.hasElapsed(5.1)) {
+        if (hewoTimer.hasElapsed(5)) {
           daMode = DaMode.AfterFiverSeconds;
         }
         break;
       case AfterFiverSeconds:
         if (hewoTimer.hasElapsed(10)) {
           daMode = DaMode.AfterTenSeconds;
-          printCount = 0;        }
+          
+        }
         break;
       case AfterTenSeconds:
-      if (lastPrintTimer.hasElapsed(1)) {
+      if (lastPrintTimer.hasElapsed(1) && printCount <= 5) {
         lastPrintTimer.reset();
         lastPrintTimer.start();
         printCount++;
         System.out.println("Seconds: " + printCount);
       }
+      else if (printCount >= 5) {
+        printCount = 0;}
 
         break;
       
