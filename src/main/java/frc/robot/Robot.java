@@ -97,7 +97,8 @@ public class Robot extends TimedRobot {
   public enum RobotState {
     underFiveSeconds,
     afterFiveSeconds,
-    afterTenSeconds;
+    afterTenSeconds,
+    afterFifteenSeconds;
   }
   RobotState robotState = RobotState.underFiveSeconds;
   @Override
@@ -106,19 +107,31 @@ public class Robot extends TimedRobot {
       case underFiveSeconds:
         if (timer.get() >= 5.1) {
           System.out.println("5 seconds have passed");
-          robotState = RobotState.afterFiveSeconds; // Transition to the next state
-          printCommand2.cancel(); // Cancel the PrintCommand
+          robotState = RobotState.afterFiveSeconds; // Transition to the next state 
+          printCommand2.schedule(); // Schedule the second PrintCommand
         }
         break;
       case afterFiveSeconds:
-        if (timer.get() >= 10.0) {
+        if (timer.get() >= 10.1) {
           System.out.println("10 seconds have passed");
           // You can add more logic here if needed
+          printCommand.cancel(); // Cancel the first PrintCommand
           printCommand2.schedule(); // Reschedule the PrintCommand if needed
           robotState = RobotState.afterTenSeconds; // Transition to the next state
         }
         break;
       case afterTenSeconds:
+      if (timer.get() >= 15.1) {
+          System.out.println("15 seconds have passed");
+          // You can add more logic here if needed
+          printCommand.schedule(); // Cancel the second PrintCommand
+          robotState = RobotState.afterFifteenSeconds; // Reset to the initial state
+        }
+        break;
+
+        case afterFifteenSeconds:
+        if (timer.get() >= 20.0) {
+        }
         break;
     }
   }
