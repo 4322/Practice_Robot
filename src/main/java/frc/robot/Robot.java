@@ -98,7 +98,8 @@ public class Robot extends TimedRobot {
     underFiveSeconds,
     afterFiveSeconds,
     afterTenSeconds,
-    afterFifteenSeconds;
+    afterFifteenSeconds,
+    afterTwentySeconds;
   }
   RobotState robotState = RobotState.underFiveSeconds;
   @Override
@@ -130,8 +131,16 @@ public class Robot extends TimedRobot {
         break;
 
         case afterFifteenSeconds:
-        if (timer.get() >= 20.0) {
+        if (timer.get() >= 20.1) {
+        System.out.println("20 seconds have passed");
+        sequentialPrintCommand2.cancel();
+        sequentialPrintCommand.schedule(); // Reschedule the first PrintCommand
+        robotState = RobotState.afterTwentySeconds;
         }
+        break;
+        case afterTwentySeconds:
+        if (timer.get() >= 25.1) {
+    }
         break;
     }
   }
