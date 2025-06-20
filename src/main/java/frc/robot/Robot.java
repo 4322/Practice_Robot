@@ -71,8 +71,8 @@ public class Robot extends TimedRobot {
           
         break;
       case AfterTenSeconds:
-      if (hewoTimer.hasElapsed(15.2)) {
-        Command.schedule();
+      if (hewoTimer.hasElapsed(16)) {
+          Command.schedule();
               }
         break;
       case AfterFifteenSeconds:
