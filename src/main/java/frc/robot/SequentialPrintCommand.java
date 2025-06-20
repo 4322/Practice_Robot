@@ -21,7 +21,7 @@ public class SequentialPrintCommand extends Command {
     @Override
     public void initialize() {
         if (runningInstance != null) {
-            System.out.println("SequentialPrintCommand Instance number " + runningInstance.currentInstance + " is already scheduled, cancelling current instance " + currentInstance);
+            System.out.println("Incoming SequentialPrintCommand Instance number " + runningInstance.currentInstance + " is canceled because instance number " + currentInstance + " is already running");
             CommandScheduler.getInstance().cancel(this);
         } 
         if (runningInstance == null){
