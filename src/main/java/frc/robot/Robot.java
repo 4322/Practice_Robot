@@ -4,6 +4,7 @@ import edu.wpi.first.wpilibj.TimedRobot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj.smartdashboard.SendableChooser;
 import edu.wpi.first.wpilibj.smartdashboard.SmartDashboard;
+import edu.wpi.first.wpilibj2.command.Command;
 import edu.wpi.first.wpilibj2.command.CommandScheduler;
 import edu.wpi.first.wpilibj2.command.PrintCommand;
 
@@ -20,7 +21,8 @@ public class Robot extends TimedRobot {
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private boolean weee= false;
   private boolean wooo = false;
-  public PrintCommand printCommand = new PrintCommand("Hello from PrintCommand!"); 
+  FirstCommand Command = new Command(); 
+  Command Command2 = new Command();
   // No need to add another PrintCommand here.
   // The existing 'printCommand' is already used in your switch statement.
   // Remove or comment out the 'myPrintCommand' declaration to avoid confusion.
@@ -53,12 +55,14 @@ public class Robot extends TimedRobot {
       }
         if (hewoTimer.hasElapsed(5.1)) {
           daMode = DaMode.AfterFiverSeconds;
+          Command.cancel();
         }
         break;
       case AfterFiverSeconds:
         if (hewoTimer.hasElapsed(10)) {
           daMode = DaMode.AfterTenSeconds;
-          printCount = 0;        }
+          printCount = 0;  
+          Command.schedule();      }
         break;
       case AfterTenSeconds:
       if (lastPrintTimer.hasElapsed(1)) {
