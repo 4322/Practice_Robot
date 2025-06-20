@@ -24,7 +24,8 @@ public class SequentialPrintCommand extends Command {
             System.out.println("SequentialPrintCommand instance number " + currentInstance + " is waiting for SequentialPrintCommand instance number " +
                                runningInstance.currentInstance + " to finish");
         } else {
-            System.out.println("SequentialPrintCommand instance number " + currentInstance + " is now the running instance");
+            System.out.println("SequentialPrintCommand instance number " + currentInstance + " is scheduled");
+            runningInstance = this;  // Set this instance as the running instance
         }
 
         count = 0;
