@@ -34,7 +34,6 @@ public class FirstCommand extends Command {
         if (runningInstance != null) {
             System.out.println("Instance " + currentInstance + " is waiting for Instance " +
                                runningInstance.currentInstance + " to finish");
-            CommandScheduler.getInstance().cancel(this);
             return;
         } else {
             System.out.println("Instance  " + currentInstance + " is scheduled");
