@@ -3,7 +3,7 @@ package frc.robot;
 import edu.wpi.first.wpilibj.Timer;
 import edu.wpi.first.wpilibj2.command.Command;
 
-public class PrintCommand extends Command {
+public class SequentialPrintCommand extends Command {
     private final Timer timer = new Timer();
     private int count;
     private double lastPrintTime;
@@ -11,13 +11,13 @@ public class PrintCommand extends Command {
     static int nextInstance = 1; 
     int currentInstance;
 
-    public PrintCommand() {
+    public SequentialPrintCommand() {
         this.currentInstance = nextInstance++;
     }
     
     @Override
     public void initialize() {
-        System.out.println("PrintCommand initialized");
+        System.out.println("sequentialPrintCommand initialized");
         count = 0;
         lastPrintTime = 0.0;
         currentTime = 0.0;
@@ -30,7 +30,7 @@ public class PrintCommand extends Command {
         double currentTime = timer.get();
         if (currentTime - lastPrintTime >= 1.0) {
             count++;
-            System.out.println("PrintCommand" +  currentInstance + "executed " + count + " times");
+            System.out.println("sequentialPrintCommand Instance number " +  currentInstance + " executed " + count + " times");
             lastPrintTime = currentTime;
         }
     }
@@ -42,7 +42,7 @@ public class PrintCommand extends Command {
 
     @Override
     public void end(boolean interrupted) {
-        System.out.println("PrintCommand" + currentInstance + "ended after " + count + " prints");
+        System.out.println("sequentialPrintCommand Instance number " + currentInstance + " ended after " + count + " prints");
         timer.stop();
     }
 }
