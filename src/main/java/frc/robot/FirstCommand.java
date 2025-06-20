@@ -33,9 +33,9 @@ public class FirstCommand extends Command {
 
     @Override
     public void execute() {
-        if (lastPrintTimer.hasElapsed(1) && printCount < 6) {
-            lastPrintTimer.reset();
-            lastPrintTimer.start();
+        if (hewoTimer.hasElapsed(1)) {
+            hewoTimer.reset();
+            hewoTimer.start();
             printCount++;
             System.out.println("Seconds: " + printCount);
           }
