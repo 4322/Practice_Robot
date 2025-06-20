@@ -21,8 +21,8 @@ public class Robot extends TimedRobot {
   private static final String kCustomAuto = "My Auto";
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
-  PrintCommand printCommand = new PrintCommand(); 
-  PrintCommand printCommand2 = new PrintCommand();
+  SequentialPrintCommand sequentialPrintCommand = new SequentialPrintCommand(); 
+  SequentialPrintCommand sequentialPrintCommand2 = new SequentialPrintCommand();
   Timer timer = new Timer();
 
   /**
@@ -89,8 +89,8 @@ public class Robot extends TimedRobot {
   public void teleopInit() {
     timer.reset(); // Reset the timer
     timer.start(); // Start the timer
-    printCommand.schedule(); // Schedule the PrintCommand to run
-    printCommand2.schedule();
+    sequentialPrintCommand.schedule(); // Schedule the PrintCommand to run
+    sequentialPrintCommand2.schedule();
   }
 
   /** This function is called periodically during operator control. */
@@ -108,14 +108,14 @@ public class Robot extends TimedRobot {
         if (timer.get() >= 5.1) {
           System.out.println("5 seconds have passed");
           robotState = RobotState.afterFiveSeconds; // Transition to the next state 
-          printCommand.cancel(); // Schedule the second PrintCommand
+          sequentialPrintCommand.cancel(); // Schedule the second PrintCommand
         }
         break;
       case afterFiveSeconds:
         if (timer.get() >= 10.1) {
           System.out.println("10 seconds have passed");
           // You can add more logic here if needed
-          printCommand.schedule(); // Reschedule the PrintCommand if needed
+          sequentialPrintCommand.schedule(); // Reschedule the PrintCommand if needed
           robotState = RobotState.afterTenSeconds; // Transition to the next state
         }
         break;
@@ -123,7 +123,7 @@ public class Robot extends TimedRobot {
       if (timer.get() >= 15.1) {
           System.out.println("15 seconds have passed");
           // You can add more logic here if needed
-          printCommand2.cancel(); // Cancel the second PrintCommand
+          sequentialPrintCommand2.cancel(); // Cancel the second PrintCommand
           robotState = RobotState.afterFifteenSeconds; // Reset to the initial state
         }
         break;
