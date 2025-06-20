@@ -39,7 +39,7 @@ public class Robot extends TimedRobot {
   public enum DaMode {
     Waiting,
     AfterFiverSeconds,
-    AfterTenSeconds;
+    AfterTenSeconds,
   }
 
   DaMode daMode = DaMode.Waiting;
@@ -56,14 +56,15 @@ public class Robot extends TimedRobot {
       }
         if (hewoTimer.hasElapsed(5.1)) {
           daMode = DaMode.AfterFiverSeconds;
-          Command.cancel();
+          
+          Command2.schedule(); 
         }
         break;
       case AfterFiverSeconds:
-        if (hewoTimer.hasElapsed(10)) {
+        if (hewoTimer.hasElapsed(10.1)) {
           daMode = DaMode.AfterTenSeconds;
           printCount = 0;  
-          Command.schedule();      }
+          Command.cancel();      }
         break;
       case AfterTenSeconds:
       if (lastPrintTimer.hasElapsed(1)) {
@@ -72,8 +73,12 @@ public class Robot extends TimedRobot {
         printCount++;
         System.out.println("Seconds: " + printCount);
       }
+      if (hewoTimer.hasElapsed(15.1)) {
+        Command.schedule();
+      }
 
         break;
+      
       
     }
   }
