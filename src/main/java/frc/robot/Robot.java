@@ -24,6 +24,7 @@ public class Robot extends TimedRobot {
   private String m_autoSelected;
   private final SendableChooser<String> m_chooser = new SendableChooser<>();
   private final JacksPrintCommand jacksPrintCommand = new JacksPrintCommand();
+  private final Timer timer = new Timer();
 
   /**
    * This function is run when the robot is first started up and should be used for any
@@ -87,12 +88,79 @@ public class Robot extends TimedRobot {
   /** This function is called once when teleop is enabled. */
   @Override
   public void teleopInit() {
+    timer.reset();
+    timer.start();
        jacksPrintCommand.schedule();
   }
 
-  /** This function is called periodically during operator control. */
-  @Override
-  public void teleopPeriodic() {}
+  public enum RobotState {
+    BEFORE_FIVE_SECONDS,
+    BETWEEN_FIVE_AND_TEN_SECONDS,
+    AFTER_TEN_SECONDS;
+}
+
+RobotState robotState = RobotState.BEFORE_FIVE_SECONDS;
+private static final double FIVE_SECOND_THRESHOLD = 5.1;
+private static final double TEN_SECOND_THRESHOLD = 10.0;
+
+private boolean hasReset = false;
+private boolean hasTransitionedOnce = false;
+
+@Override
+public void teleopPeriodic() {
+    updateRobotState();
+}
+
+private void updateRobotState() {
+    double timeElapsed = timer.get();
+
+    switch (robotState) {
+        case BEFORE_FIVE_SECONDS:
+            if (timeElapsed >= FIVE_SECOND_THRESHOLD) {
+                transitionToState(RobotState.BETWEEN_FIVE_AND_TEN_SECONDS);
+            }
+            break;
+        case BETWEEN_FIVE_AND_TEN_SECONDS:
+            if (timer.get() >= TEN_SECOND_THRESHOLD){
+                transitionToState(RobotState.AFTER_TEN_SECONDS);
+            }
+            
+            break;
+        case AFTER_TEN_SECONDS:
+            timer.reset();
+            transitionToState(RobotState.BEFORE_FIVE_SECONDS);
+            break;
+    }
+}
+
+private void transitionToState(RobotState newState) {
+  if (hasTransitionedOnce) return;
+
+  robotState = newState;
+  System.out.println(newState + " reached");
+
+  switch (newState) {
+      case BETWEEN_FIVE_AND_TEN_SECONDS:
+          if (!hasReset){
+              jacksPrintCommand.cancel();
+          }
+          break;
+      case AFTER_TEN_SECONDS:
+          if (!hasReset){
+              jacksPrintCommand.schedule();
+          }
+          break;
+      case BEFORE_FIVE_SECONDS:
+          if (!hasReset) {
+              hasReset = true;
+              hasTransitionedOnce = true;
+          }
+          break;
+      default:
+          break;
+  }
+}
+
 
   /** This function is called once when the robot is disabled. */
   @Override
