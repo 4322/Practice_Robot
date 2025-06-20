@@ -9,13 +9,13 @@ public class SequentialPrintCommand extends Command {
     private int count;
     private double lastPrintTime;
     private double currentTime;
-    static int nextInstance = 1; 
-    int currentInstance;
+    private static int nextInstance = 1; 
+    private int currentInstance;
 
     public SequentialPrintCommand() {
         this.currentInstance = nextInstance++;
     }
-    public static SequentialPrintCommand runningInstance = null;
+    private static SequentialPrintCommand runningInstance = null;
 
     
     @Override
@@ -24,11 +24,10 @@ public class SequentialPrintCommand extends Command {
             System.out.println("Incoming SequentialPrintCommand Instance number " + currentInstance + " is canceled because instance number " + runningInstance.currentInstance + " is already running");
             CommandScheduler.getInstance().cancel(this);
         } 
-        if (runningInstance == null){
-            System.out.println("SequentialPrintCommand Instance number " + currentInstance + " is not scheduled, scheduling now");
-            CommandScheduler.getInstance().schedule(this);
+        else {
+            System.out.println("SequentialPrintCommand Instance number " + currentInstance + " is scheduled");
             runningInstance = this;
-    }
+        }
         System.out.println("SequentialPrintCommand initialized");
         count = 0;
         lastPrintTime = 0.0;
